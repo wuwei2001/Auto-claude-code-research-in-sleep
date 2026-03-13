@@ -377,7 +377,10 @@ claude
 
 ## 📋 Roadmap
 
-- [ ] **飞书集成** — 对接 [feishu-claude-code](https://github.com/joewongjc/feishu-claude-code)，在飞书/手机上实时查看 review 进度、接收 checkpoint 通知、审批或拒绝 idea
+- [ ] **飞书集成** — 三种模式，可按 skill 配置：
+  - **关闭**（默认）— 不接飞书，纯 CLI 不变
+  - **仅推送** — 关键节点（实验完成、review 出分、checkpoint 等待）发飞书 webhook 通知。无需额外进程，skill 里 `curl` 一下就行。手机收推送，不能回复
+  - **双向交互** — 通过 [feishu-claude-code](https://github.com/joewongjc/feishu-claude-code) 全双工桥接。在飞书里审批/拒绝 idea、回复 checkpoint。需要 `python main.py` 和 Claude Code 同时运行（可都丢服务器 `screen` 里常驻）
 - [ ] **Zotero MCP 集成** — 直接读取 Zotero 论文库的论文、标签和批注
 - [ ] 更多执行者 × 评审者组合（Gemini、DeepSeek 等）
 

@@ -430,7 +430,10 @@ This lets GLM (acting as Claude Code) familiarize itself with the skill files an
 
 ## 📋 Roadmap
 
-- [ ] **Feishu/Lark integration** — bridge ARIS with [feishu-claude-code](https://github.com/joewongjc/feishu-claude-code) so you can monitor review progress, receive checkpoint notifications, and approve/reject ideas from Feishu on mobile
+- [ ] **Feishu/Lark integration** — three modes, configurable per skill:
+  - **Off** (default) — no Feishu, pure CLI as-is
+  - **Push only** — lightweight webhook notifications at key events (experiment done, review scored, checkpoint waiting). No extra process needed, just `curl` from within skills. Mobile push, no reply
+  - **Interactive** — full bidirectional via [feishu-claude-code](https://github.com/joewongjc/feishu-claude-code). Approve/reject ideas, reply to checkpoints from Feishu. Requires `python main.py` running alongside Claude Code (both can run on a remote server via `screen`)
 - [ ] **Zotero MCP integration** — read papers, tags, and annotations directly from Zotero library
 - [ ] More executor × reviewer combinations (Gemini, DeepSeek, etc.)
 
