@@ -110,3 +110,50 @@
 | 审稿结果 | 相同（同一个 GPT-5.4） | 相同 |
 
 **核心区别：** Claude Code 中所有步骤自动串联，不需要你手动运行 Python 脚本。
+
+---
+
+## 6. `/idea-creator` — 创意生成结果参考
+
+### 研究方向: 虚拟细胞数字孪生用于药物毒性预测
+
+GPT-5.4 xhigh 生成了 **5 个研究创意**：
+
+| # | 标题 | 可行性 | 影响力 | GPT推荐 |
+|---|------|--------|--------|---------|
+| 1 | 早期多组学轨迹预测晚期毒性 | 8/10 | 8/10 | "最干净的ML论文" |
+| 2 | 稀有毒性亚群定义最有用的孪生 | 8/10 | 8/10 | — |
+| 3 | 供体条件化孪生预测特异性毒性 | 6/10 | 9/10 | — |
+| 4 | 因果调控孪生区分适应vs毒性 | 6/10 | 9/10 | — |
+| 5 | 弱监督图谱到毒性孪生 | 9/10 | 8/10 | "最快出结果" |
+
+**GPT-5.4 推荐 3-6 月内可发表:** Idea #1 + Idea #5
+
+---
+
+## 7. 已演示 vs 未演示的 Skill 汇总
+
+### 已实际运行并有真实结果（5个）
+
+| Skill | 调用方式 | 结果 |
+|-------|---------|------|
+| `/arxiv` | Python + arXiv API | 9篇论文 + 3个PDF下载 |
+| `/research-review` | Codex MCP → GPT-5.4 xhigh | 3/10, 8个弱点 |
+| `/research-lit` | Codex MCP → GPT-5.4 xhigh | 4大方向, 5个空白 |
+| `/novelty-check` | Codex MCP → GPT-5.4 xhigh | PARTIALLY NOVEL, 8个已有工作 |
+| `/idea-creator` | Codex MCP → GPT-5.4 xhigh | 5个创意, 推荐#1和#5 |
+
+### 仅文档说明（需要长时间运行或特殊环境）
+
+| Skill | 原因 | 在demo中 |
+|-------|------|---------|
+| `/idea-discovery` (Workflow 1) | 需要 30-120 分钟 | ✅ 流程说明+预期输出 |
+| `/auto-review-loop` (Workflow 2) | 需要 2-8 小时 | ✅ 流程图+脚本 |
+| `/paper-writing` (Workflow 3) | 需要输入文件+1-3小时 | ✅ 流程说明 |
+| `/research-pipeline` | 需要一整晚 | ✅ 流程说明 |
+| `/paper-plan` | 需要 NARRATIVE_REPORT.md | ✅ 命令参考 |
+| `/paper-write` | 需要 PAPER_PLAN.md | ✅ 命令参考 |
+| `/paper-compile` | 需要 LaTeX 源文件 | ✅ 命令参考 |
+| `/run-experiment` | 需要 GPU 服务器 | ✅ 命令参考 |
+| `/monitor-experiment` | 需要 GPU 服务器 | ✅ 命令参考 |
+| `/pixel-art` | 轻量，可随时运行 | ✅ 命令参考 |
