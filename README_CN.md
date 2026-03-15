@@ -64,7 +64,6 @@ claude
 > /research-pipeline "你的课题" — AUTO_PROCEED: false                          # 在 idea 选择关卡暂停
 > /research-pipeline "你的课题" — human checkpoint: true                       # 每轮 review 后暂停，可给修改意见
 > /research-pipeline "你的课题" — arxiv download: true                         # 文献调研时下载最相关的 arXiv PDF
-> /research-pipeline "你的课题" — DBLP_BIBTEX: true                           # 从 DBLP/CrossRef 获取真实 BibTeX
 > /research-pipeline "你的课题" — AUTO_PROCEED: false, human checkpoint: true  # 组合使用
 > ```
 

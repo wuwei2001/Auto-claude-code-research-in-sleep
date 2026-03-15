@@ -64,7 +64,6 @@ claude
 > /research-pipeline "your topic" — AUTO_PROCEED: false                          # pause at idea selection gate
 > /research-pipeline "your topic" — human checkpoint: true                       # pause after each review round to give feedback
 > /research-pipeline "your topic" — arxiv download: true                         # download top arXiv PDFs during literature survey
-> /research-pipeline "your topic" — DBLP_BIBTEX: true                           # fetch real BibTeX from DBLP/CrossRef
 > /research-pipeline "your topic" — AUTO_PROCEED: false, human checkpoint: true  # combine options
 > ```
 
