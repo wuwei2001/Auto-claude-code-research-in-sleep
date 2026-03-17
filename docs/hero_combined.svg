@@ -273,7 +273,7 @@
     <text x="75" y="223" font-size="8px" fill="#2a7a2a">✓ Eval CE: 2.798 → 2.651  (↓5.3%)</text>
     <text x="75" y="235" font-size="8px" fill="#2a7a2a">✓ TC: 108.4 → 112.7       (↑4.0%)</text>
 
-    <text x="212" y="255" text-anchor="middle" font-size="10px" fill="#bbb" font-style="italic">Bridge: Implement &amp; Deploy</text>
+    <text x="212" y="255" text-anchor="middle" font-size="10px" fill="#bbb" font-style="italic">Workflow 1.5: Implement &amp; Deploy</text>
   </g>
 
   <!-- ============================================================ -->
