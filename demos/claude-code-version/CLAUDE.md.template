@@ -2,43 +2,130 @@
 
 > 将此文件复制到你的研究项目根目录，重命名为 CLAUDE.md，然后填写内容。
 > Claude Code 启动时会自动读取这个文件，了解你的项目背景。
+> 用 `<!-- EXAMPLE: ... -->` 标注的是示例内容，替换成你自己的。
 
 ## 项目概述
 
 - **研究方向**: [一句话描述你的研究方向]
+  <!-- EXAMPLE: 用单细胞多组学数据构建虚拟细胞数字孪生体，预测药物毒性 -->
 - **核心问题**: [你要解决什么问题]
+  <!-- EXAMPLE: 现有药物毒性筛选方法依赖群体平均响应，忽略细胞异质性导致假阴性 -->
 - **关键创新**: [你的方法/思路有什么新意]
+  <!-- EXAMPLE: 以毒性终点为直接训练目标的单细胞级虚拟孪生体，而非转录组重构 -->
+- **目标受众**: [谁会受益于这个研究]
+  <!-- EXAMPLE: 计算毒理学和药物安全性评估领域的研究者 -->
 
-## 环境
+## 技术栈
 
-- **Python**: 3.12
-- **深度学习框架**: PyTorch 2.x / TensorFlow / JAX
-- **数据**: [描述你的数据来源和规模]
-- **GPU**: [有无 GPU，什么型号]
+- **编程语言**: Python 3.12
+- **深度学习框架**: PyTorch 2.x
+  <!-- 或 TensorFlow, JAX, 根据实际情况修改 -->
+- **关键库**:
+  - scanpy / anndata — 单细胞分析
+  - scvi-tools — 概率模型
+  - pytorch-lightning — 训练框架
+  <!-- 根据你的项目修改 -->
+- **数据管理**: 本地 / HPC / Cloud (S3)
+
+## 数据
+
+- **主要数据集**: [名称、来源、规模]
+  <!-- EXAMPLE: sci-Plex (Srivatsan et al., 2020) — 649 种药物处理, ~1M 细胞 -->
+- **辅助数据集**: [如有]
+  <!-- EXAMPLE: Allen Brain Atlas Patch-seq — 2333 个神经元, 转录组+电生理 -->
+- **数据位置**: [路径]
+  <!-- EXAMPLE: data/ 目录，或 ssh://server:/data/scplex/ -->
+- **预处理状态**: [已完成/进行中]
 
 ## 前期结果
 
-- [结果 1]: [数值]
-- [结果 2]: [数值]
-- [结果 3]: [数值]
+| 指标 | 数值 | 备注 |
+|------|------|------|
+| [指标1] | [数值] | [说明] |
+| [指标2] | [数值] | [说明] |
 
-## 当前问题
+<!-- EXAMPLE:
+| 指标 | 数值 | 备注 |
+|------|------|------|
+| 合成数据 R² | 0.47 | OmicsToParams 映射 |
+| 真实数据 R² | 0.36 | Patch-seq 验证 |
+| 毒性分类 AUC | 0.72 | 初步，待改进 |
+-->
 
-- [问题 1]: [描述]
-- [问题 2]: [描述]
+## 当前问题 / 瓶颈
+
+1. [问题 1]: [描述]
+2. [问题 2]: [描述]
+
+<!-- EXAMPLE:
+1. 训练 R² 太低（0.47），可能是因为映射任务不适定
+2. 缺乏测试集评估和基线对比
+3. 论文范围太大，需要聚焦
+-->
 
 ## 目标会议/期刊
 
-- [NeurIPS / ICML / ICLR / Nature Methods / ...]
-- 截稿日期: [日期]
+- **首选**: [NeurIPS / ICML / ICLR / Nature Methods / ...]
+- **截稿日期**: [日期]
+- **页数限制**: [如 NeurIPS: 10 页正文 + 无限附录]
+
+<!-- EXAMPLE:
+- 首选: NeurIPS 2026 (截稿: 2026-05-22)
+- 备选: ICML 2027 (截稿: 2027-01)
+-->
 
 ## Remote Server (可选)
 
-- SSH: `ssh user@server` (key-based auth)
-- GPU: [型号和数量]
-- Conda env: `research`
-- Code directory: `/home/user/experiments/`
+如果你有 GPU 服务器用于跑实验，填写以下信息：
+
+```
+SSH:     ssh user@server (key-based auth)
+GPU:     [型号和数量, 如 4x A100 80GB]
+Conda:   research (Python 3.12, PyTorch 2.x)
+Code:    /home/user/experiments/project_name/
+Data:    /data/datasets/your_data/
+```
+
+## 项目目录结构 (可选)
+
+帮助 Claude 快速理解你的代码结构：
+
+```
+your_project/
+├── CLAUDE.md              ← 本文件
+├── src/
+│   ├── model.py           ← 核心模型
+│   ├── data.py            ← 数据加载
+│   └── train.py           ← 训练脚本
+├── experiments/
+│   ├── config.yaml        ← 实验配置
+│   └── results/           ← 实验结果
+├── data/
+│   └── processed/         ← 预处理后的数据
+├── papers/                ← 下载的文献 PDF
+└── paper/                 ← LaTeX 论文源文件
+    ├── main.tex
+    └── figures/
+```
+
+## ARIS 使用偏好 (可选)
+
+告诉 Claude 你喜欢的工作方式：
+
+- **审稿严格度**: [严格 / 中等 / 温和]
+  <!-- 默认严格（NeurIPS/ICML 标准）-->
+- **自动化程度**: [全自动 / 每步确认]
+  <!-- 默认全自动（AUTO_PROCEED=true）-->
+- **文献搜索范围**: [近3年 / 近5年 / 不限]
+- **语言偏好**: [中文讨论 + 英文论文 / 全英文]
 
 ## 注意事项
 
 - [任何 Claude 需要知道的特殊事项]
+
+<!-- EXAMPLE:
+- 数据包含 PHI，不要上传到外部服务
+- 图表必须使用 colorblind-safe 配色
+- 引用格式用 NeurIPS 2026 模板
+- 实验要在 screen 会话中运行，防止断连
+-->

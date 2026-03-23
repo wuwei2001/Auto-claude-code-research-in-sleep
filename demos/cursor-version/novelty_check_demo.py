@@ -13,7 +13,10 @@ import sys
 import io
 import argparse
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except (AttributeError, io.UnsupportedOperation):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 
 def display_demo_output():

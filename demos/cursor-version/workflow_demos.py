@@ -20,7 +20,10 @@ import sys
 import io
 import time
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except (AttributeError, io.UnsupportedOperation):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 
 DEMOS = {}
 
@@ -367,6 +370,149 @@ def demo_paper_compile():
     print("  输出: paper/main.pdf (1.8 MB)")
 
 
+@demo("analyze-results")
+def demo_analyze_results():
+    """实验结果分析"""
+
+    print_phase("ARIS /analyze-results 模拟演示")
+    print()
+    print("  输入: /analyze-results experiments/results/")
+    print("  预计耗时: 2-5 分钟")
+    print()
+
+    print_phase("Step 1: 扫描结果文件", "⏱ 10 sec")
+    print_step("扫描 experiments/results/ 目录...")
+    print_step("发现 4 个实验运行:")
+    print("    run_001/ — baseline_linear (完成)")
+    print("    run_002/ — xgboost_model  (完成)")
+    print("    run_003/ — mlp_baseline   (完成)")
+    print("    run_004/ — toxtwin_full   (完成)")
+    print()
+    print_step("解析日志和指标文件...")
+
+    print_phase("Step 2: 计算统计指标", "⏱ 30 sec")
+    print_step("读取各 run 的 metrics.json...")
+    print()
+    print("  ┌──────────────────┬─────────┬─────────┬─────────┬───────────┐")
+    print("  │ Model            │ R²      │ AUC     │ F1      │ Runtime   │")
+    print("  ├──────────────────┼─────────┼─────────┼─────────┼───────────┤")
+    print("  │ Linear           │ 0.312   │ 0.651   │ 0.583   │ 2m 15s    │")
+    print("  │ XGBoost          │ 0.421   │ 0.738   │ 0.672   │ 5m 42s    │")
+    print("  │ MLP              │ 0.398   │ 0.712   │ 0.645   │ 18m 31s   │")
+    print("  │ ToxTwin (ours)   │ 0.523   │ 0.814   │ 0.751   │ 45m 12s   │")
+    print("  └──────────────────┴─────────┴─────────┴─────────┴───────────┘")
+    print()
+    print_step("计算置信区间 (5-fold cross-validation)...")
+    print("    ToxTwin R²: 0.523 ± 0.031 (95% CI: [0.492, 0.554])")
+    print("    ToxTwin AUC: 0.814 ± 0.018 (95% CI: [0.796, 0.832])")
+    print()
+    print_step("统计显著性检验 (paired t-test vs XGBoost):")
+    print("    R²:  p=0.0023 **  (significant)")
+    print("    AUC: p=0.0041 **  (significant)")
+    print("    F1:  p=0.0089 **  (significant)")
+
+    print_phase("Step 3: 生成对比图表", "⏱ 30 sec")
+    print_step("生成 comparison_bar_chart.pdf ✅")
+    print_step("生成 training_curves.pdf ✅")
+    print_step("生成 confusion_matrix.pdf ✅")
+    print_step("生成 ablation_heatmap.pdf ✅")
+
+    print_phase("Step 4: 撰写分析总结", "⏱ 1 min")
+    print_step("写入 ANALYSIS_REPORT.md...")
+    print()
+    print("  核心发现:")
+    print("  1. ToxTwin 在所有指标上显著优于基线 (p < 0.01)")
+    print("  2. 相比最强基线 XGBoost，R² 提升 24.2%, AUC 提升 10.3%")
+    print("  3. 时间分辨特征贡献最大 (消融: -15.6% R²)")
+    print("  4. 稀有亚群感知损失贡献第二 (消融: -8.3% R²)")
+    print()
+    print("  输出:")
+    print("    ANALYSIS_REPORT.md — 完整分析报告")
+    print("    figures/comparison_bar_chart.pdf")
+    print("    figures/training_curves.pdf")
+    print("    figures/confusion_matrix.pdf")
+    print("    figures/ablation_heatmap.pdf")
+
+
+@demo("run-experiment")
+def demo_run_experiment():
+    """部署并监控实验"""
+
+    print_phase("ARIS /run-experiment + /monitor-experiment 模拟演示")
+    print()
+    print("  输入: /run-experiment src/train.py --config experiments/config.yaml")
+    print("  预计耗时: 部署 5 min, 训练取决于模型和数据")
+    print()
+
+    print_phase("Step 1: 环境检查", "⏱ 30 sec")
+    print_step("检查远程服务器连接...")
+    print("    SSH: user@gpu-server.lab.com ✅ (key-based auth)")
+    print_step("检查 GPU 可用性...")
+    print("    GPU 0: NVIDIA A100 80GB — 空闲 ✅")
+    print("    GPU 1: NVIDIA A100 80GB — 空闲 ✅")
+    print("    GPU 2: NVIDIA A100 80GB — 占用 (user2)")
+    print("    GPU 3: NVIDIA A100 80GB — 空闲 ✅")
+    print_step("检查 conda 环境...")
+    print("    conda env: research (Python 3.12, PyTorch 2.5) ✅")
+    print_step("检查磁盘空间...")
+    print("    /home/user: 248 GB free ✅")
+    print("    /data: 1.2 TB free ✅")
+
+    print_phase("Step 2: 同步代码和数据", "⏱ 1-3 min")
+    print_step("rsync 代码到远程: src/ → /home/user/experiments/toxtwin/src/")
+    print("    Sending 47 files... done (2.3 MB)")
+    print_step("检查数据已在远程...")
+    print("    /data/datasets/sciplex/ — 已存在 (15.6 GB) ✅")
+
+    print_phase("Step 3: 启动训练", "⏱ 30 sec")
+    print_step("创建 screen 会话: screen -S toxtwin_train")
+    print_step("激活环境: conda activate research")
+    print_step("设置环境变量: CUDA_VISIBLE_DEVICES=0,1")
+    print_step("启动训练:")
+    print('    python src/train.py --config experiments/config.yaml \\')
+    print('      --gpus 2 --batch-size 256 --epochs 100 \\')
+    print('      --log-dir experiments/results/run_005/')
+    print()
+    print("  训练已在后台启动! PID: 28451")
+    print("  Screen 会话: toxtwin_train")
+    print()
+    print("  查看训练状态:")
+    print("    ssh user@server 'screen -r toxtwin_train'")
+    print("    或使用 /monitor-experiment")
+
+    print_phase("── /monitor-experiment 演示 ──")
+    print()
+    print("  输入: /monitor-experiment")
+    print()
+
+    print_step("连接远程服务器...")
+    print_step("检查活跃实验...")
+    print()
+    print("  ┌────────────────────────────────────────────────────────┐")
+    print("  │ Experiment: toxtwin_train (PID: 28451)                │")
+    print("  │ Status: RUNNING                                       │")
+    print("  │ Elapsed: 2h 14m 33s                                   │")
+    print("  │ Progress: Epoch 34/100 (34%)                          │")
+    print("  │                                                       │")
+    print("  │ Current metrics:                                      │")
+    print("  │   Train loss: 0.1847  (↓ from 0.4521)                │")
+    print("  │   Val R²:     0.489   (↑ best: 0.497 @ epoch 31)    │")
+    print("  │   Val AUC:    0.782   (↑ best: 0.791 @ epoch 32)    │")
+    print("  │   Learning rate: 3.2e-4 (cosine schedule)            │")
+    print("  │                                                       │")
+    print("  │ GPU utilization:                                      │")
+    print("  │   GPU 0: 94% util, 71.2/80 GB memory                │")
+    print("  │   GPU 1: 92% util, 68.9/80 GB memory                │")
+    print("  │                                                       │")
+    print("  │ ETA: ~4h 15m (based on epoch timing)                 │")
+    print("  │ Expected completion: ~18:30 today                    │")
+    print("  └────────────────────────────────────────────────────────┘")
+    print()
+    print("  后续建议:")
+    print("    /monitor-experiment        — 再次检查进度")
+    print("    /analyze-results results/  — 训练完成后分析结果")
+
+
 @demo("pixel-art")
 def demo_pixel_art():
     """像素画"""
@@ -391,6 +537,43 @@ def demo_pixel_art():
     print()
     print("  (实际输出是一个完整的 SVG 文件)")
     print("  输出: pixel_art_output.svg")
+
+
+@demo("feishu-notify")
+def demo_feishu_notify():
+    """飞书通知"""
+
+    print_phase("ARIS /feishu-notify 模拟演示")
+    print()
+    print("  输入: /feishu-notify \"实验训练完成, R²=0.523, AUC=0.814\"")
+    print()
+
+    print_step("检查飞书 Webhook 配置...")
+    print("    Webhook URL: https://open.feishu.cn/open-apis/bot/v2/hook/xxx ✅")
+    print()
+    print_step("构建消息卡片...")
+    print()
+    print("  ┌─────────────────────────────────────────────────────┐")
+    print("  │  🔬 ARIS 实验通知                                   │")
+    print("  │  ─────────────────────────────────────────────      │")
+    print("  │  状态: ✅ 训练完成                                   │")
+    print("  │  时间: 2026-03-15 23:45                             │")
+    print("  │                                                     │")
+    print("  │  实验结果:                                           │")
+    print("  │    R²  = 0.523 (↑ 24.2% vs XGBoost)               │")
+    print("  │    AUC = 0.814 (↑ 10.3% vs XGBoost)               │")
+    print("  │    F1  = 0.751                                      │")
+    print("  │                                                     │")
+    print("  │  下一步: /analyze-results 或 /auto-review-loop     │")
+    print("  └─────────────────────────────────────────────────────┘")
+    print()
+    print_step("发送飞书通知... ✅ 已发送")
+    print()
+    print("  用途:")
+    print("  - 实验完成后自动通知")
+    print("  - 审稿循环每轮结束通知分数变化")
+    print("  - 论文编译完成通知")
+    print("  - 过夜任务完成时推送结果摘要到手机")
 
 
 def list_demos():

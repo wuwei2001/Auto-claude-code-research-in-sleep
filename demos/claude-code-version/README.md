@@ -10,22 +10,40 @@
 | 文件 | 说明 |
 |------|------|
 | `README.md` | 本文件 — 完整的 Claude Code 版本教程 |
+| **环境与启动** | |
 | `quick_start.ps1` | 快速启动脚本（自动检查环境 + 显示命令列表 + 启动 Claude Code） |
+| `health_check.ps1` | 深度环境诊断（17 项检查 + 网络测试 + 生成诊断报告） |
+| **过夜自动化脚本** | |
 | `overnight_review.ps1` | 过夜审稿脚本（一键启动自动审稿循环） |
-| `CLAUDE.md.template` | 项目说明模板（复制到你的研究项目中使用） |
+| `overnight_idea_discovery.ps1` | 过夜创意发现脚本（文献→创意→新颖性→审查） |
+| `overnight_pipeline.ps1` | 过夜全流程脚本（idea→code→experiment→review） |
+| **参考与模板** | |
+| `run_all_demos.ps1` | 所有 Skill 演示命令列表（按难度分级） |
+| `demo_results_reference.md` | 预期结果参考（与 Cursor 版本对照） |
+| `CLAUDE.md.template` | 项目说明模板（含示例、技术栈、ARIS 偏好） |
+| `NARRATIVE_REPORT.md.template` | 研究叙事模板（`/paper-writing` 的输入格式） |
 
 ## 快速使用
 
 ```powershell
-# 方法 1: 用启动脚本（推荐新手）
+# 方法 1: 深度环境诊断（推荐先运行）
+.\health_check.ps1
+
+# 方法 2: 用启动脚本（推荐新手）
 .\quick_start.ps1
 
-# 方法 2: 直接启动
+# 方法 3: 直接启动
 claude
 > /arxiv "drug toxicity prediction"
 
-# 方法 3: 过夜审稿
+# 方法 4: 过夜创意发现
+.\overnight_idea_discovery.ps1 "your research direction"
+
+# 方法 5: 过夜审稿
 .\overnight_review.ps1 "你的论文主题"
+
+# 方法 6: 过夜全流程（idea→code→experiment→review）
+.\overnight_pipeline.ps1 "your research direction" -Venue "NeurIPS"
 ```
 
 ---

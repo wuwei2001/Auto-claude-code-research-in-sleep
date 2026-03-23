@@ -27,7 +27,10 @@ import ssl
 import os
 import time
 
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except (AttributeError, io.UnsupportedOperation):
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 ssl._create_default_https_context = ssl._create_unverified_context
 
 NS = "http://www.w3.org/2005/Atom"

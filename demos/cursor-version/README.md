@@ -12,19 +12,35 @@
 |------|------|
 | `README.md` | 本文件 — 完整演示记录（含操作流程、审稿结果、文献分析） |
 | `DEMO_REPORT.md` | 同内容备份 |
-| `arxiv_search_demo.py` | `/arxiv` Skill 的 Python 实现，可直接运行 |
+| **可运行的 Python 演示** | |
+| `arxiv_search_demo.py` | `/arxiv` — arXiv 搜索 + PDF 下载（真实 API 调用） |
+| `research_lit_demo.py` | `/research-lit` — 多源文献综述（arXiv + WebSearch 模拟 + 分类） |
+| `research_review_demo.py` | `/research-review` — GPT-5.4 审稿（预录制 + 实际调用模式） |
+| `novelty_check_demo.py` | `/novelty-check` — 新颖性验证（预录制结果） |
+| `idea_creator_demo.py` | `/idea-creator` — 创意生成（预录制的 5 个创意） |
+| `workflow_demos.py` | 所有 Workflow 模拟（9 个: idea-discovery, auto-review, paper-writing, pipeline, paper-plan, paper-compile, analyze-results, run-experiment, feishu-notify） |
+| `run_all_demos.py` | **统一运行器** — 交互式菜单 / 按等级 / 快速演示 / 指定 ID |
 
 ## 快速使用
 
 ```powershell
-# 1. 运行 arXiv 搜索
+# 方法 1: 交互式菜单（推荐）
+python run_all_demos.py
+
+# 方法 2: 快速演示（每级各一个）
+python run_all_demos.py --quick
+
+# 方法 3: 运行特定脚本
 python arxiv_search_demo.py "drug toxicity prediction"
 python arxiv_search_demo.py "virtual cell modeling" --max 10 --download-all
+python research_lit_demo.py "single cell drug toxicity" --save
+python research_review_demo.py --demo
+python novelty_check_demo.py --demo
+python idea_creator_demo.py
+python workflow_demos.py all
 
-# 2. 在 Cursor AI 对话中使用审稿功能
+# 方法 4: 在 Cursor AI 对话中使用
 #    输入："请用 Codex MCP 调用 GPT-5.4 审查我的研究项目..."
-
-# 3. 在 Cursor AI 对话中做文献综述
 #    输入："请按照 research-lit skill 帮我做关于 XX 的文献综述"
 ```
 
